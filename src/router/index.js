@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
+/* Layout */
+import Layout from '@/layout'
+
+// 公共页面
+const constantRoutes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    component: Layout
   },
   {
     path: '/about',
@@ -21,7 +23,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes: constantRoutes
 })
 
 export default router
