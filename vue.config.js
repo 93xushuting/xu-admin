@@ -1,5 +1,6 @@
 // path 模块是node.js中处理路径的核心模块。可以很方便的处理关于文件路径的问题。
 // join() 将多个参数值合并成一个路径
+'use strict'
 const path = require('path')
 
 const defaultSettings = require('./src/settings.js')
@@ -43,9 +44,8 @@ module.exports = {
       // 浏览器输出编译错误
       warnings: false,
       errors: true
-    }
-    // 提供在服务器内部的其他中间件之前执行自定义中间件的能力
-    // before: require('./')
+    },
+    after: require('./mock/mock-server.js')
   },
   // webpack配置 可基于环境有条件地配置行为 Type：Object | Function
   /* 如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中

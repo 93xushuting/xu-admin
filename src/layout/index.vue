@@ -1,6 +1,6 @@
 <template>
-  <div class="app-wrapper">
-    <sidebar></sidebar>
+  <div :class="classObj" class="app-wrapper">
+    <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
       <div>
         <navbar></navbar>
@@ -20,8 +20,23 @@ export default {
     Sidebar,
     AppMain
   },
-  computed: {}
+  computed: {
+    classObj() {
+      return {
+        mobile: this.device === 'mobile'
+      }
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '~@/styles/mixin.scss';
+// @import '~@/styles/variables.scss';
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+</style>

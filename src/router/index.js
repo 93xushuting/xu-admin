@@ -9,6 +9,11 @@ import Layout from '@/layout'
 // 公共页面
 const constantRoutes = [
   {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
     path: '/',
     component: Layout
   },
