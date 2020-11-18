@@ -1,13 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      :model="loginForm"
-      auto-complete="on"
-      label-position="left"
-    >
+    <el-form ref="loginForm" :rules="loginRules" class="login-form" :model="loginForm" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">Login Form</h3>
       </div>
@@ -16,16 +9,7 @@
         <span class="svg-container">
           <svg-icon icon-class="user"></svg-icon>
         </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        >
-        </el-input>
+        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text" tabindex="1" auto-complete="on"> </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
@@ -48,13 +32,7 @@
         </span>
       </el-form-item>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width: 100%; margin-bottom: 30px;"
-        @click.native.prevent="handleLogin"
-        >Login</el-button
-      >
+      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
         <span style="margin-right: 20px;">username: admin</span>
@@ -97,6 +75,13 @@ export default {
       redirect: undefined
     }
   },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      }
+    }
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -112,9 +97,18 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('login', this.loginForm).then(() => {
-            // this.$router.push({  })
-          })
+          this.$store
+            .dispatch('login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          console.log('error submit!!')
+          return false
         }
       })
     }
