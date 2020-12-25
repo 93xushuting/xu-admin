@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
     <hello-world :foo="foo" :coo="coo" @upRocket="reciveRocket"></hello-world>
   </div>
 </template>

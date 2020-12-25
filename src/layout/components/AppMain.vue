@@ -1,7 +1,9 @@
 <template>
-  <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <router-view :key="key"></router-view>
+  <section class="app-main" style="min-height: 100%;">
+    <transition name="fade" mode="out-in">
+      <keep-alive :include="cachedViews">
+        <router-view></router-view>
+      </keep-alive>
     </transition>
   </section>
 </template>
@@ -9,7 +11,7 @@
 export default {
   name: 'AppMain',
   computed: {
-    key() {
+    cachedViews() {
       return this.$route.path
     }
   }

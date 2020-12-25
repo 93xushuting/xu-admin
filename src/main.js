@@ -14,10 +14,10 @@ import '@/styles/index.scss' // global css
 import '@/icons'
 import '@/permission'
 
-if (process.env.NODE_ENV === 'development') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+// if (process.env.NODE_ENV === 'development') {
+//   const { mockXHR } = require('../mock')
+//   mockXHR()
+// }
 
 Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false

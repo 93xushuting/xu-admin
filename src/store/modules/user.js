@@ -1,12 +1,14 @@
-import { login, logout, getInfo } from '@/api/user'
+import { logout } from '@/api/user'
+import { loginByUsername, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-// import { resetRouter } from '@/router'
+import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    roles: []
   }
 }
 
@@ -24,19 +26,21 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
+  // 用户名登录
+  LoginByUsername({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
-        .then(response => {
-          const { data } = response
-          commit('SET_TOKEN', data.token)
-          setToken(data.token)
+      loginByUsername({ username: username.trim(), password: password })
+        .then(data => {
+          commit('SET_TOKEN', data.access_token)
+          setToken(data.access_token)
           resolve()
         })
         .catch(error => {
@@ -45,21 +49,20 @@ const actions = {
     })
   },
 
-  // get user info
-  getInfo({ commit, state }) {
+  // 获取用户信息
+  getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
-        .then(response => {
-          const { data } = response
+      getUserInfo(state.token)
+        .then(data => {
+          // const { roles, name, avatar } = data
 
-          if (!data) {
-            return reject('Verification failed, please Login again.')
-          }
-
-          const { name, avatar } = data
-
-          commit('SET_NAME', name)
-          commit('SET_AVATAR', avatar)
+          // 角色必须是非空数组
+          // if (!roles || roles.length <= 0) {
+          //   reject('角色必须是非空数组！')
+          // }
+          commit('SET_ROLES', data.role)
+          commit('SET_NAME', data.name)
+          commit('SET_AVATAR', data.avatar || 'http://xmi.1yd.me/xmweb-avatar.png')
           resolve(data)
         })
         .catch(error => {
@@ -74,7 +77,7 @@ const actions = {
       logout(state.token)
         .then(() => {
           removeToken() // must remove  token  first
-          // resetRouter()
+          resetRouter()
           commit('RESET_STATE')
           resolve()
         })

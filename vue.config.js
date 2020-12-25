@@ -44,8 +44,8 @@ module.exports = {
       // 浏览器输出编译错误
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
+    // before: require('./mock/mock-server.js')
   },
   // webpack配置 可基于环境有条件地配置行为 Type：Object | Function
   /* 如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中
